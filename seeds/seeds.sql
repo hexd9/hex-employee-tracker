@@ -17,10 +17,10 @@ VALUES  ('Sales Lead', 100000, 4),
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES  ('Alicia', 'Cortez', 2, NULL),
+        ('Sophia', 'Ramirez', 2, 1),
+        ('Graysen', 'Costa', 3, 1),
         ('Shane', 'Maddox', 4, 3),
         ('Aleah', 'Simon', 6, 3),
-        ('Graysen', 'Costa', 3, 1)
-        ('Sophia', 'Ramirez', 2, 1),
         ('Elijah', 'Baker', 4, 3),
         ('Isabella', 'Peterson', 6, 3),
         ('Mason', 'Flores', 3, 1),
