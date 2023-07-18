@@ -2,17 +2,12 @@ const mysql = require("mysql2");
 const inquirer = require("inquirer");
 
 // Connect to database
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    // MySQL username,
-    user: "root",
-    // MySQL password
-    password: "",
-    database: "company_db",
-  },
-  console.log(`Connected to the company_db database.`)
-);
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "company_db",
+}, console.log(`Connected to the company_db database.`));
 
 const allDepartments = () => {
   // Query Department
@@ -24,11 +19,25 @@ const allDepartments = () => {
     });
 };
 
+const newDepartment = (newDepartmentName) => {
+  // Query Department
+  db.promise()
+    .query("INSERT INTO department (name) VALUES (?)", [newDepartmentName])
+    .then(() => {
+      console.log("New department added successfully!");
+      mainMenu();
+    })
+    .catch((error) => {
+      console.error("Error adding new department:", error);
+      mainMenu();
+    });
+};
+
 const allRoles = () => {
   // Query Role
   db.promise()
     .query(
-      "SELECT title, salary, department.name as department FROM role left join department on role.department_id = department.id"
+      "SELECT title, salary, department.name AS department FROM role LEFT JOIN department ON role.department_id = department.id"
     )
     .then(([data]) => {
       console.table(data);
@@ -40,7 +49,7 @@ const allEmployees = () => {
   // Query Employee
   db.promise()
     .query(
-      "Select employee.first_name, employee.last_name, role.title, role.salary, department.name, concat(manager.first_name, ' ',manager.last_name) as manager FROM employee left join role on employee.role_id = role.id left join department on role.department_id = department.id left join employee manager on employee.manager_id = manager.id"
+      "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee manager ON employee.manager_id = manager.id"
     )
     .then(([data]) => {
       console.table(data);
@@ -54,11 +63,13 @@ const mainMenu = () => {
       {
         type: "list",
         name: "work",
-        message: "choose an option ",
+        message: "Choose an option",
         choices: [
           "View all departments",
           "View all roles",
           "View all employees",
+          "Add a new department",
+          "Exit"
         ],
       },
     ])
@@ -73,7 +84,28 @@ const mainMenu = () => {
         case "View all employees":
           allEmployees();
           break;
+        case "Add a new department":
+          addDepartment();
+          break;
+        case "Exit":
+          process.exit();
       }
     });
 };
+
+const addDepartment = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "newDepartmentName",
+        message: "Enter the name of the new department:",
+      },
+    ])
+    .then((data) => {
+      const newDepartmentName = data.newDepartmentName;
+      newDepartment(newDepartmentName);
+    });
+};
+
 mainMenu();
