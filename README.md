@@ -4,9 +4,8 @@
 
 This command-line application is an Employee Management System that allows users to perform various operations on employee data. It utilizes a MySQL database to store and retrieve information about departments, roles, and employees. The application provides a user-friendly interface to view existing data, add new records, and update employee roles.
 
-## Table of Contents (Optional)
+## Table of Contents 
 
-If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
 - [Usage](#usage)
