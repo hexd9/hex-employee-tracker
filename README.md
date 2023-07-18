@@ -19,6 +19,8 @@ Install inquirer and mysql2
 
 ## Usage
 
+https://drive.google.com/file/d/1lbVKMlWF62lSdMs8yJpq3CP2wvF1DXPa/view
+
 Set up your MySQL database by executing the SQL scripts found in the schema.sql file. This will create the necessary tables and structure for the Employee Management System.
 
 Open Terminal
