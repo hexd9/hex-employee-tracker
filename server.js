@@ -2,12 +2,15 @@ const mysql = require("mysql2");
 const inquirer = require("inquirer");
 
 // Connect to database
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "company_db",
-}, console.log(`Connected to the company_db database.`));
+const db = mysql.createConnection(
+  {
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "company_db",
+  },
+  console.log(`Connected to the company_db database.`)
+);
 
 const allDepartments = () => {
   // Query Department
@@ -69,7 +72,8 @@ const mainMenu = () => {
           "View all roles",
           "View all employees",
           "Add a new department",
-          "Exit"
+          "Delete a department",
+          "Exit",
         ],
       },
     ])
@@ -86,6 +90,9 @@ const mainMenu = () => {
           break;
         case "Add a new department":
           addDepartment();
+          break;
+        case "Delete a department":
+          deleteDepartment();
           break;
         case "Exit":
           process.exit();
@@ -105,6 +112,30 @@ const addDepartment = () => {
     .then((data) => {
       const newDepartmentName = data.newDepartmentName;
       newDepartment(newDepartmentName);
+    });
+};
+
+const deleteDepartment = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "departmentId",
+        message: "Enter the ID of the department to delete:",
+      },
+    ])
+    .then((data) => {
+      const departmentId = data.departmentId;
+      removeDepartment(departmentId);
+    });
+};
+
+const removeDepartment = (departmentId) => {
+  db.promise()
+    .query("DELETE FROM department WHERE id = ?", [departmentId])
+    .then(() => {
+      console.log("Department deleted successfully!");
+      mainMenu();
     });
 };
 
